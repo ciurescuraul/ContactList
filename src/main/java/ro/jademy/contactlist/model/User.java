@@ -2,8 +2,9 @@ package ro.jademy.contactlist.model;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-public class User {
+public class User implements Comparable<User> {
 
     private String firstName;
     private String lastName;
@@ -115,5 +116,13 @@ public class User {
                 ", company=" + company +
                 ", isFavorite=" + isFavorite +
                 '}';
+    }
+
+    @Override
+    public int compareTo(User o) {
+        if (firstName.compareTo(o.firstName) == 0){
+            return lastName.compareTo(o.lastName);
+        }
+        return firstName.compareTo(o.firstName);
     }
 }
