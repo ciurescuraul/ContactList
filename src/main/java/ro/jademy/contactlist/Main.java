@@ -6,6 +6,7 @@ import ro.jademy.contactlist.model.PhoneNumber;
 import ro.jademy.contactlist.model.User;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -49,26 +50,24 @@ public class Main {
         mapUser4.put("Work",phoneUser4Nr2);
         mapUser4.put("Home",phoneUser4Nr1);
 
-        // Comapany User 1
+        // Company User 1
         Company user1Company = new Company("Tarom",user1Address);
-        // Comapany User 2
+        // Company User 2
         Company user2Company = new Company("Google",user2Address);
-        // Comapany User 3
+        // Company User 3
         Company user3Company = new Company("Coltuc si Asociatii",user3Address);
-        // Comapany User 4
+        // Company User 4
         Company user4Company = new Company("Cyber It Solutions",user4Address);
 
         // Create users
-        User user1 = new User("Acsente","Marius","marius@gmail.com",23 ,mapUser1, user1Address,"Pilot", user1Company, true);
-        User user2 = new User("Grigore","Andrei","andrei_grig@yahoo.com",45 ,mapUser2, user2Address,"Programator", user2Company, false);
-        User user3 = new User("Mihailescu","Cristian-Ionut","ionut4321@microsoft.com",35 ,mapUser3, user3Address,"Avocat", user3Company, true);
-        User user4 = new User("Cristescu","Alexandru","alexandru@outlook.com",18 ,mapUser4, user4Address,"Antreprenor", user4Company, false);
+        User user1 = new User("Absence","Marius","123marius@gmail.com",23 ,mapUser1, user1Address,"Pilot", user1Company, true);
+        User user2 = new User("Gregor","Andrei","grigore@yahoo.com",45 ,mapUser2, user2Address,"Programmer", user2Company, false);
+        User user3 = new User("Michail's","Cristian-Inonu","ionut4321@microsoft.com",35 ,mapUser3, user3Address,"Advocate", user3Company, true);
+        User user4 = new User("Cristen","Alexandre","23543cristen@outlook.com",18 ,mapUser4, user4Address,"Entrepreneur", user4Company, false);
 
+        // CREATE A CONTACT LIST OF USERS
 
-
-           // CREATE A CONTACT LIST OF USERS
-
-        List<User> usersContactList = new ArrayList<User>();
+        List<User> usersContactList = new ArrayList<>();
         usersContactList.add(user1);
         usersContactList.add(user2);
         usersContactList.add(user3);
@@ -80,8 +79,8 @@ public class Main {
         System.out.println("-----------------------------------------------------------");
         usersContactList
                 .stream()
-                .sorted()
-                .forEach(s -> System.out.println(s));
+                .sorted(Comparator.naturalOrder())
+                .forEach(System.out::println);
 
         // LIST CONTACT LIST BY A GIVEN CRITERIA
         System.out.println("-----------------------------------------------------------");
@@ -91,7 +90,7 @@ public class Main {
                 .stream()
                 .sorted(Comparator.comparing(User::getAge))  //#1 (o1,o2) -> o1.getAge().compareTo(o2.getAge())
                                                              //#2 Comparator.comparing(User::getAge)
-                .forEach(s -> System.out.println(s));
+                .forEach(System.out::println);
 
         // DISPLAY A FAVORITES LIST
         System.out.println("-----------------------------------------------------------");
@@ -99,10 +98,25 @@ public class Main {
         System.out.println("-----------------------------------------------------------");
         usersContactList
                 .stream()
-                .filter(s -> s.isFavorite())
+                .filter(User::isFavorite)
                 .forEach(System.out::println);
 
         // search by a given or multiple criteria
+        System.out.println("-----------------------------------------------------------");
+        System.out.println("#4 ~~ Contact List displayed by a Given or Multiple Criteria ~~");
+        System.out.println("-----------------------------------------------------------");
+        usersContactList
+                .stream()
+                .sorted(Comparator.comparing(User::getEmail))
+                .forEach(System.out::println);
+
         // display some statistics for the contact list
-    }
+        System.out.println("-----------------------------------------------------------");
+        System.out.println("#4 ~~ Displaying Statistics ~~");
+        System.out.println("-----------------------------------------------------------");
+        int stats = usersContactList
+                            .size();
+        System.out.println("In Contact List you have " + stats + " contacts");
+
+                }
 }
