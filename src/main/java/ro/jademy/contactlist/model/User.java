@@ -1,11 +1,11 @@
 package ro.jademy.contactlist.model;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class User implements Comparable<User> {
 
+    private int id;
     private String firstName;
     private String lastName;
     private String email;
@@ -19,7 +19,8 @@ public class User implements Comparable<User> {
 
     private boolean isFavorite;
 
-    public User(String firstName, String lastName, String email, Integer age, Map<String, PhoneNumber> phoneNumbers, Address address, String jobTitle, Company company, boolean isFavorite) {
+    public User(Integer id, String firstName, String lastName, String email, Integer age, Map<String, PhoneNumber> phoneNumbers, Address address, String jobTitle, Company company, boolean isFavorite) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -29,6 +30,10 @@ public class User implements Comparable<User> {
         this.jobTitle = jobTitle;
         this.company = company;
         this.isFavorite = isFavorite;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getFirstName() {
@@ -124,5 +129,9 @@ public class User implements Comparable<User> {
             return lastName.compareTo(o.lastName);
         }
         return firstName.compareTo(o.firstName);
+    }
+
+    public String displayUsers() {
+        return getId()+ ". " + getFirstName() + " " + getLastName();
     }
 }
