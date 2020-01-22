@@ -10,6 +10,10 @@ public class PhoneNumber {
         this.number = number;
     }
 
+    public PhoneNumber() {
+
+    }
+
     public String getCountryCode() {
         return countryCode;
     }

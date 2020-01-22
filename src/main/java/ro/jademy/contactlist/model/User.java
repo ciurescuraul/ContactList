@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class User implements Comparable<User> {
 
-    private int id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String email;
@@ -32,8 +32,15 @@ public class User implements Comparable<User> {
         this.isFavorite = isFavorite;
     }
 
+    public User() {
+    }
+
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -109,9 +116,22 @@ public class User implements Comparable<User> {
     }
 
     @Override
+    public int compareTo(User o) {
+        if (firstName.compareTo(o.firstName) == 0) {
+            return lastName.compareTo(o.lastName);
+        }
+        return firstName.compareTo(o.firstName);
+    }
+
+    public String displayUsers() {
+        return getId() + ". " + getFirstName() + " " + getLastName();
+    }
+
+    @Override
     public String toString() {
         return "User{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
@@ -121,17 +141,5 @@ public class User implements Comparable<User> {
                 ", company=" + company +
                 ", isFavorite=" + isFavorite +
                 '}';
-    }
-
-    @Override
-    public int compareTo(User o) {
-        if (firstName.compareTo(o.firstName) == 0){
-            return lastName.compareTo(o.lastName);
-        }
-        return firstName.compareTo(o.firstName);
-    }
-
-    public String displayUsers() {
-        return getId()+ ". " + getFirstName() + " " + getLastName();
     }
 }

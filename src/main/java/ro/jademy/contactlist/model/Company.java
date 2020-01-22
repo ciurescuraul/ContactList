@@ -3,11 +3,11 @@ package ro.jademy.contactlist.model;
 public class Company {
 
     private String name;
-    private Address address;
+    private CompanyAddress companyAddress;
 
-    public Company(String name, Address address) {
+    public Company(String name, CompanyAddress companyAddress) {
         this.name = name;
-        this.address = address;
+        this.companyAddress = companyAddress;
     }
 
     public String getName() {
@@ -18,19 +18,19 @@ public class Company {
         this.name = name;
     }
 
-    public Address getAddress() {
-        return address;
+    public CompanyAddress getCompanyAddress() {
+        return companyAddress;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setCompanyAddress(CompanyAddress companyAddress) {
+        this.companyAddress = companyAddress;
     }
 
     @Override
     public String toString() {
         return "Company{" +
                 "name='" + name + '\'' +
-                ", address=" + address +
+                ", companyAddress=" + companyAddress +
                 '}';
     }
 }
