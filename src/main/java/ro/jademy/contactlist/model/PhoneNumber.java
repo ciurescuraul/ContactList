@@ -1,17 +1,20 @@
 package ro.jademy.contactlist.model;
 
+import java.util.Objects;
+
 public class PhoneNumber {
 
     private String countryCode; // ex: +40
     private String number; // ex: 740123456
 
-    public PhoneNumber(String countryCode, String number) {
-        this.countryCode = countryCode;
+    public PhoneNumber(String number) {
+        this.countryCode = "+40"; // default country code
         this.number = number;
     }
 
-    public PhoneNumber() {
-
+    public PhoneNumber(String countryCode, String number) {
+        this.countryCode = countryCode;
+        this.number = number;
     }
 
     public String getCountryCode() {
@@ -32,9 +35,21 @@ public class PhoneNumber {
 
     @Override
     public String toString() {
-        return "PhoneNumber{" +
-                "countryCode='" + countryCode + '\'' +
-                ", number='" + number + '\'' +
-                '}';
+        return "PhoneNumber -> " +
+                " " + countryCode + "-" + number + " ";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PhoneNumber that = (PhoneNumber) o;
+        return Objects.equals(countryCode, that.countryCode) &&
+                Objects.equals(number, that.number);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(countryCode, number);
     }
 }

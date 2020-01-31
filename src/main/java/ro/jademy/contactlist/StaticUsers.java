@@ -1,4 +1,8 @@
-package ro.jademy.contactlist.model;
+package ro.jademy.contactlist;
+
+import ro.jademy.contactlist.model.Address;
+import ro.jademy.contactlist.model.PhoneNumber;
+import ro.jademy.contactlist.model.User;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,17 +43,17 @@ public class StaticUsers {
         Address user6Address = new Address("Calea Bucurestilor ", 12, 56, "2T", "852963", "Iasi", "Romania");
 
         // CompanyAddress User 1
-        CompanyAddress user1cAddress = new CompanyAddress("Str. Sever Axente", 28, "Satu Mare", "Romania");
+//        CompanyAddress user1cAddress = new CompanyAddress("Str. Sever Axente", 28, "Satu Mare", "Romania");
         // CompanyAddress User 2
-        CompanyAddress user2cAddress = new CompanyAddress("Str. I.C.Bratianu", 151, "Braila", "Romania");
+//        CompanyAddress user2cAddress = new CompanyAddress("Str. I.C.Bratianu", 151, "Braila", "Romania");
         // CompanyAddress User 3
-        CompanyAddress user3cAddress = new CompanyAddress("Str. Transilvaniei", 18, "Oradea", "Romania");
+//        CompanyAddress user3cAddress = new CompanyAddress("Str. Transilvaniei", 18, "Oradea", "Romania");
         // CompanyAddress User 4
-        CompanyAddress user4cAddress = new CompanyAddress("Str. 23 August", 188, "Otopeni", "Romania");
+//        CompanyAddress user4cAddress = new CompanyAddress("Str. 23 August", 188, "Otopeni", "Romania");
         // CompanyAddress User 5
-        CompanyAddress user5cAddress = new CompanyAddress("Str. Mitropoliei", 56, "Bucuresti", "Romania");
+//        CompanyAddress user5cAddress = new CompanyAddress("Str. Mitropoliei", 56, "Bucuresti", "Romania");
         // CompanyAddress User 6
-        CompanyAddress user6cAddress = new CompanyAddress("Calea Bucurestilor ", 12, "Iasi", "Romania");
+//        CompanyAddress user6cAddress = new CompanyAddress("Calea Bucurestilor ", 12, "Iasi", "Romania");
 
         // Map User 1
         Map<String, PhoneNumber> phoneNumberMapUser1 = new HashMap<>();
@@ -77,67 +81,63 @@ public class StaticUsers {
         phoneNumberMapUser6.put("Home", phoneUser6Nr1);
 
         // Company User 1
-        Company user1Company = new Company("Tarom", user1cAddress);
+//        Company user1Company = new Company("Tarom", user1cAddress);
         // Company User 2
-        Company user2Company = new Company("Google", user2cAddress);
+//        Company user2Company = new Company("Google", user2cAddress);
         // Company User 3
-        Company user3Company = new Company("Coltuc si Asociatii", user3cAddress);
+//        Company user3Company = new Company("Coltuc si Asociatii", user3cAddress);
         // Company User 4
-        Company user4Company = new Company("Cyber It Solutions", user4cAddress);
+//        Company user4Company = new Company("Cyber It Solutions", user4cAddress);
         // Company User 5
-        Company user5Company = new Company("Cyber It Solutions", user5cAddress);
+//        Company user5Company = new Company("Cyber It Solutions", user5cAddress);
         // Company User 6
-        Company user6Company = new Company("Cyber It Solutions", user6cAddress);
+//        Company user6Company = new Company("Cyber It Solutions", user6cAddress);
 
         // Create users
 
-        User user1 = new User(1, "Absence", "Marius", "123marius@gmail.com", 23, phoneNumberMapUser1, user1Address, "Pilot", user1Company, true);
-        User user2 = new User(2, "Gregor", "Andrei", "grigore@yahoo.com", 45, phoneNumberMapUser2, user2Address, "Programmer", user2Company, false);
-        User user3 = new User(3, "Michail's", "Cristian-Inonu", "ionut4321@microsoft.com", 35, phoneNumberMapUser3, user3Address, "Advocate", user3Company, true);
-        User user4 = new User(4, "Cristen", "Alexandre", "23543cristen@outlook.com", 18, phoneNumberMapUser4, user4Address, "Entrepreneur", user4Company, false);
-        User user5 = new User(5, "Alexandru", "Marcel", "marcel2020@gmail.com", 31, phoneNumberMapUser5, user5Address, "Cercetator", user5Company, true);
-        User user6 = new User(6, "Aurelian", "Eusebiu", "eus_ebiu@gmail.com", 27, phoneNumberMapUser6, user6Address, "Inginer", user6Company, false);
+//        User user1 = new User(1, "Absence", "Marius", "123marius@gmail.com", 23, phoneNumberMapUser1, user1Address, "Pilot", user1Company, true);
+//        User user2 = new User(2, "Gregor", "Andrei", "grigore@yahoo.com", 45, phoneNumberMapUser2, user2Address, "Programmer", user2Company, false);
+//        User user3 = new User(3, "Michail's", "Cristian-Inonu", "ionut4321@microsoft.com", 35, phoneNumberMapUser3, user3Address, "Advocate", user3Company, true);
+//        User user4 = new User(4, "Cristen", "Alexandre", "23543cristen@outlook.com", 18, phoneNumberMapUser4, user4Address, "Entrepreneur", user4Company, false);
+//        User user5 = new User(5, "Alexandru", "Marcel", "marcel2020@gmail.com", 31, phoneNumberMapUser5, user5Address, "Cercetator", user5Company, true);
+//        User user6 = new User(6, "Aurelian", "Eusebiu", "eus_ebiu@gmail.com", 27, phoneNumberMapUser6, user6Address, "Inginer", user6Company, false);
 
         // CREATE A CONTACT LIST OF USERS
         List<User> usersContactList = new ArrayList<>();
-        usersContactList.add(user1);
-        usersContactList.add(user2);
-        usersContactList.add(user3);
-        usersContactList.add(user4);
-        usersContactList.add(user5);
-        usersContactList.add(user6);
+//        usersContactList.add(user1);
+//        usersContactList.add(user2);
+//        usersContactList.add(user3);
+//        usersContactList.add(user4);
+//        usersContactList.add(user5);
+//        usersContactList.add(user6);
 
         List<User> sortedUsers = usersContactList
                 .stream()
                 .sorted(Comparator.comparing(User::getFirstName))
                 .collect(Collectors.toList());
-
-
-
         return sortedUsers;
     }
 
-    public static void listusers() {
+
+    public static void listUsers() {
         Map<Character, List<User>> usersSortMap = sortedUsers()
                 .stream()
                 .collect(Collectors.groupingBy(
                         user -> user.getFirstName().charAt(0),
-                        () -> new TreeMap<>(), //TreeMap::new,
+                        TreeMap::new, // () -> new TreeMap<>()
                         Collectors.toList()));
 
         for (Map.Entry<Character, List<User>> entry : usersSortMap.entrySet()) {
+            // Display all first character of the users's first name
             Character character = entry.getKey();
-
-            System.out.println();
-            System.out.println("     ~ " + character + " ~     ");
-            System.out.println();
-
-            List<User> listaUseri = entry.getValue();
-
-            for (User user : listaUseri) {
-                System.out.println(user.displayUsers());
-            }
-            System.out.println();
+                // Character view
+//                CharDisplay.charDisplay(character);
+            // Display all users with the same first character of first name
+            List<User> usersList = entry.getValue();
+            System.out.println("---------------------------");
+            usersList.forEach(
+                    i->System.out.println("| " + i.displayUsers() + " |"));
+            System.out.println("---------------------------");
         }
     }
 }

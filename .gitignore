@@ -19,8 +19,16 @@
 *.tar.gz
 *.rar
 *.txt
+/TODO.txt
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 *.iml
 .idea
+/src/main/java/ro/jademy/contactlist/FileHandler.java
+/src/main/java/ro/jademy/contactlist/RandomID.java
+/src/main/java/ro/jademy/contactlist/Search.java
+/src/main/java/ro/jademy/contactlist/StaticUsers.java
+
+
+
