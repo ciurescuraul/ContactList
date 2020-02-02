@@ -7,8 +7,9 @@ import ro.jademy.contactlist.model.User;
 import ro.jademy.contactlist.service.UserService;
 
 import java.util.*;
-import java.util.jar.JarOutputStream;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
+
+import static java.util.Comparator.naturalOrder;
 
 public class Menu {
 
@@ -35,15 +36,14 @@ public class Menu {
         String header = "~~~~~~~~~~~~~ Contact List Menu ~~~~~~~~~~~~~";
         String footer = "~~~~~~~~~~~~~~~~~~~~ End ~~~~~~~~~~~~~~~~~~~~";
         boolean exit = false;
-
         while (!exit) {
             System.out.println(header);
             for (int i = 0; i < menuList.length; i++) {
-                System.out.printf("\t %1d\t ~ \t%s\n", i+1, menuList[i]);
+                System.out.printf("\t %1d\t ~ \t%s\n", i + 1, menuList[i]);
             }
             System.out.println(footer);
-            String opt ="";
-            while(!opt.matches("^[1-9]\\d*$") || Integer.parseInt(opt) > menuList.length) {
+            String opt = "";
+            while (!opt.matches("^[1-9]\\d*$") || Integer.parseInt(opt) > menuList.length) {
                 System.out.print("Enter option : ");
                 opt = scanner.next();
             }
@@ -56,7 +56,11 @@ public class Menu {
             case 1:
                 // Display a list of users
                 if (userService.getContacts() != null && !userService.getContacts().isEmpty()) {
-                    userService.getContacts().forEach(u -> System.out.println(u.displayUsers()));
+                    userService.getContacts()
+                            .forEach(u -> System.out.println(u.displayUsers()));
+                    int size = userService.getContacts().stream().mapToInt(User::getUserId).summaryStatistics().getMax();
+                    System.out.println("You have " + size + " contacts");
+
                 } else {
                     System.out.println("NO users in contact list!");
                 }
@@ -103,56 +107,10 @@ public class Menu {
 
                     Optional<User> userOptEdit = userService.getContactById(Id);
                     if (userOptEdit.isPresent()) {
-                        User editedUser = userOptEdit.get();
-                        editedUser.viewUserDetails();
+                        User userToEdit = userOptEdit.get();
+                        userToEdit.viewUserDetails();
+                        editUser(userToEdit);
 
-                        System.out.println("Edit User First Name: ");
-                        String editFirstName = scanner.next();
-                        System.out.println("Edit User Last Name: ");
-                        String editLastName = scanner.next();
-                        scanner.nextLine();
-                        System.out.println("Edit User Email: ");
-                        String editEmail = scanner.next();
-                        System.out.println("Edit User Age: ");
-                        Integer editAge = scanner.nextInt();
-                        String editHome = "home";
-                        System.out.println("Edit Home Number: ");
-                        String editHomePhoneNumber = scanner.next();
-                        String editWork = "work";
-                        System.out.println("Edit Work Number: ");
-                        String editWorkPhoneNumber = scanner.next();
-                        System.out.println("Edit Address Street Name: ");
-                        String editStreetName = scanner.next();
-                        scanner.nextLine();
-                        System.out.println("Edit Address Street Number: ");
-                        Integer editStreetNumber = scanner.nextInt();
-                        System.out.println("Edit Address Apartament Number: ");
-                        Integer editApartamentNumber = scanner.nextInt();
-                        System.out.println("Edit Address Apartament Floor: ");
-                        String editApartamentFloor = scanner.next();
-                        System.out.println("Edit Address ZipCode: ");
-                        String editZipCode = scanner.next();
-                        System.out.println("Edit Address City: ");
-                        String editCity = scanner.next();
-                        System.out.println("Edit Address Country: ");
-                        String editCountry = scanner.next();
-                        System.out.println("Edit Job Title: ");
-                        String editJobTitle = scanner.next();
-                        scanner.nextLine();
-                        System.out.println("Edit Company Name: ");
-                        String editCompanyName = scanner.next();
-                        scanner.nextLine();
-                        System.out.println("Edit if Contact is Favourite (true) or Not (false): ");
-                        boolean editIsFavourite = scanner.nextBoolean();
-
-                        Map<String, PhoneNumber> editedUserPhoneNumbers = new HashMap<>();
-                        editedUserPhoneNumbers.put(editHome, new PhoneNumber(editHomePhoneNumber));
-                        editedUserPhoneNumbers.put(editWork, new PhoneNumber(editWorkPhoneNumber));
-
-                        Address address = new Address(editStreetName, editStreetNumber, editApartamentNumber, editApartamentFloor, editZipCode, editCity, editCountry);
-                        Company company = new Company(editCompanyName, address);
-
-                        userService.editContact(Id, editFirstName, editLastName, editEmail, editAge, editedUserPhoneNumbers, address, editJobTitle, company, editIsFavourite);
                     } else {
                         System.out.println("Sorry, no user with id " + Id + " exists in Contact List");
                         System.exit(0);
@@ -182,7 +140,15 @@ public class Menu {
                 userService.search(query).forEach(u -> System.out.println(u.displayUsers()));
                 break;
             case 7:
-                System.exit(0);
+                List<User> favUsers = userService.getContacts().stream()
+                        .filter(User::isFavorite)
+                        .collect(Collectors.toList());
+                System.out.println("~~~ Favourite Users ~~~");
+                for (User favUser : favUsers) {
+                    System.out.println(favUser.displayUsers());
+                }
+                System.out.println("-----------------------");
+                break;
             case 8:
                 System.exit(0);
                 break;
@@ -191,6 +157,100 @@ public class Menu {
                 break;
         }
         return false;
+    }
+
+
+    private User editUser(User user) {
+        String editFields[] = {
+                "Edit First Name",
+                "Edit Last Name",
+                "Edit Email",
+                "Change Age",
+                "Update Phone Numbers",
+                "Update Address",
+                "Replace Job Title",
+                "Change Company",
+                "Edit Is Favourite",
+                "Return to Main Menu",
+        };
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("Edit user: " + user.getFirstName() + " " + user.getLastName());
+            System.out.println("Choose what field you want to update");
+            for (int i = 0; i < editFields.length; i++) {
+                System.out.printf("\t %1d\t ~ \t%s\n", i + 1, editFields[i]);
+            }
+            String opt = "";
+            while (!opt.matches("^[1-9]\\d*$") || (Integer.parseInt(opt) > editFields.length)) {
+                System.out.println("Enter valid option : ");
+                opt = scanner.next();
+            }
+            switch (Integer.parseInt(opt)) {
+                case 1:
+                    System.out.println("Enter new first name : ");
+                    user.setFirstName(scanner.next());
+                    break;
+                case 2:
+                    System.out.println("Enter new last name : ");
+                    user.setLastName(scanner.next());
+                    scanner.nextLine();
+                    break;
+                case 3:
+                    System.out.println("Enter new email address : ");
+                    user.setEmail(scanner.next());
+                    break;
+                case 4:
+                    System.out.println("Change age : ");
+                    user.setAge(scanner.nextInt());
+                    break;
+                case 5:
+                    Map<String, PhoneNumber> phoneNumberMap = new HashMap<>();
+                    System.out.println("Enter new home phone number : ");
+                    phoneNumberMap.put("Home", new PhoneNumber(scanner.next()));
+                    System.out.println("Enter new work phone number : ");
+                    phoneNumberMap.put("Work", new PhoneNumber(scanner.next()));
+                    user.setPhoneNumbers(phoneNumberMap);
+                    break;
+                case 6:
+                    System.out.println("Enter new fields for the address");
+                    System.out.println("Enter street name : ");
+                    String streetName = scanner.next();
+                    scanner.nextLine();
+                    System.out.println("Enter street number : ");
+                    int streetNr = scanner.nextInt();
+                    System.out.println("Enter apartament number : ");
+                    int apartNr = scanner.nextInt();
+                    System.out.println("Enter apartament floor : ");
+                    String floor = scanner.next();
+                    System.out.println("Enter ZipCode : ");
+                    String zipCode = scanner.next();
+                    System.out.println("Enter city : ");
+                    String city = scanner.next();
+                    System.out.println("Enter country");
+                    String country = scanner.next();
+
+                    user.setAddress(new Address(streetName, streetNr, apartNr, floor, zipCode, city, country));
+
+                    break;
+                case 7:
+                    System.out.println("Change job title : ");
+                    user.setJobTitle(scanner.next());
+                    break;
+                case 8:
+                    System.out.println("Modify company : ");
+                    user.setCompany(new Company(scanner.next()));
+                    scanner.nextLine();
+                    break;
+                case 9:
+                    System.out.println("Change IsFavourite status (true/false) : ");
+                    user.setFavorite(scanner.nextBoolean());
+                    break;
+                case 10:
+                    exit = true;
+            }
+
+        }
+        return user;
     }
 }
 

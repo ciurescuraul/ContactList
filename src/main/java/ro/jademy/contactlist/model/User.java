@@ -164,18 +164,16 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", age=" + age +
-                ", phoneNumbers=" + phoneNumbers +
-                ", address=" + address +
-                ", jobTitle='" + jobTitle + '\'' +
-                ", company=" + company +
-                ", isFavorite=" + isFavorite +
-                '}';
+        return  "\n userId : " + userId +
+                "\n firstName : " + firstName +
+                "\n lastName : " + lastName +
+                "\n email : " + email +
+                "\n age : " + age +
+                "\n phoneNumbers : " + phoneNumbers +
+                "\n address : " + address +
+                "\n jobTitle : " + jobTitle +
+                "\n company : " + company +
+                "\n isFavorite : " + isFavorite;
     }
 
     public String displayUsers() {
@@ -196,5 +194,12 @@ public class User {
         System.out.println("Company: " + getCompany());
         System.out.println("Is favourite: " + isFavorite());
         System.out.println("**********************************************************");
+    }
+
+    public int compareTo(User o) {
+        if (lastName.compareTo(o.lastName) == 0) {
+            return firstName.compareTo(o.firstName);
+        }
+        return lastName.compareTo(o.lastName);
     }
 }
