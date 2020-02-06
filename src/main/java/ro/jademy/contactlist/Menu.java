@@ -17,7 +17,6 @@ public class Menu {
     private UserService userService;
 
     public Menu(UserService userService) {
-
         this.userService = userService;
     }
 
@@ -51,19 +50,38 @@ public class Menu {
         }
     }
 
+
     private boolean menuOptions(int i) {
         switch (i) {
             case 1:
+                System.out.println();
+                System.out.println(" All contacts \n");
                 // Display a list of users
                 if (userService.getContacts() != null && !userService.getContacts().isEmpty()) {
-                    userService.getContacts()
-                            .forEach(u -> System.out.println(u.displayUsers()));
-                    int size = userService.getContacts().stream().mapToInt(User::getUserId).summaryStatistics().getMax();
-                    System.out.println("You have " + size + " contacts");
-
-                } else {
-                    System.out.println("NO users in contact list!");
+                    // Display users asociated to first char of user First name
+                    List<User> users = userService.getContacts().stream().sorted(Comparator.comparing(User::getFirstName)).collect(Collectors.toList());
+                    Map<Character, List<User>> sortedUsersMap = users.stream().collect(Collectors.groupingBy(
+                            user -> user.getFirstName().charAt(0),
+                            TreeMap::new,
+                            Collectors.toList()
+                    ));
+                    if (!sortedUsersMap.isEmpty()) {
+                        for (Map.Entry<Character, List<User>> entry : sortedUsersMap.entrySet()) {
+                            System.out.println("--- " + entry.getKey() + " ---");
+                            entry.getValue().forEach(u -> System.out.println(u.displayUsers()));
+                        }
+                    }
+                    // How many users are in contactList
+                    int size = userService.getContacts().size();
+                    if (size == 1) {
+                        System.out.println("You have only " + size + " contact\n");
+                    } else if (size > 1) {
+                        System.out.println(" You have " + size + " contacts\n");
+                    } else {
+                        System.out.println("NO users in contact list!\n");
+                    }
                 }
+                System.out.println();
                 break;
             case 2:
                 // View contact details
@@ -82,7 +100,7 @@ public class Menu {
             case 3:
                 // Add contacts to Contact list
                 int maxId = userService.getContacts().size();
-                Integer userId = maxId + 1; // fetch the maximum id from the list
+                Integer userId = maxId + 10; // fetch the maximum id from the list
 
 //                    IntSummaryStatistics stats = userService.getContacts().stream()
 //                            .mapToInt(User::getUserId)
@@ -135,17 +153,29 @@ public class Menu {
                 break;
             case 6:
                 // Search for a user
-                System.out.println("Enter First name of contact you want to search for: ");
+                System.out.println("Search for a contact: ");
                 String query = scanner.next();
                 userService.search(query).forEach(u -> System.out.println(u.displayUsers()));
                 break;
             case 7:
                 List<User> favUsers = userService.getContacts().stream()
+                        .sorted(Comparator.comparing(User::getFirstName))
                         .filter(User::isFavorite)
                         .collect(Collectors.toList());
-                System.out.println("~~~ Favourite Users ~~~");
-                for (User favUser : favUsers) {
-                    System.out.println(favUser.displayUsers());
+                Map<Character, List<User>> sortedUsersMap = favUsers.stream().collect(Collectors.groupingBy(
+                        u -> u.getFirstName().charAt(0),
+                        TreeMap::new,
+                        Collectors.toList()
+                ));
+                System.out.println("--- Favourite Users ---");
+                System.out.println();
+                if (!sortedUsersMap.isEmpty() && sortedUsersMap != null) {
+                    for (Map.Entry<Character, List<User>> entry : sortedUsersMap.entrySet()) {
+                        System.out.println("~~~~~ " + entry.getKey() + " ~~~~~");
+                        entry.getValue().stream().filter(User::isFavorite).forEach(u -> System.out.println(u.displayUsers())); // Display favourite users by first char of firstname in natural order
+                    }
+                } else {
+                    System.out.println("No favourite users to display.");
                 }
                 System.out.println("-----------------------");
                 break;
@@ -161,7 +191,8 @@ public class Menu {
 
 
     private User editUser(User user) {
-        String editFields[] = {
+
+        String[] editFields = {
                 "Edit First Name",
                 "Edit Last Name",
                 "Edit Email",

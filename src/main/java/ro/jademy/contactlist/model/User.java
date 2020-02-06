@@ -1,6 +1,7 @@
 package ro.jademy.contactlist.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -9,8 +10,8 @@ public class User {
     private static final String DEFAULT_PHONE_NUMBER_GROUP = "home";
 
     private Integer userId;
-    private String firstName;
-    private String lastName;
+        private String firstName;
+        private String lastName;
     private String email;
     private Integer age;
 
@@ -97,11 +98,8 @@ public class User {
         this.age = age;
     }
 
-    public void getPhoneNumbers() {
-
-    phoneNumbers.entrySet().forEach(entry -> {
-            System.out.println(entry.getKey() + " " + entry.getValue());
-        });
+    public Map<String, PhoneNumber> getPhoneNumbers() {
+        return phoneNumbers;
     }
 
     public void setPhoneNumbers(Map<String, PhoneNumber> phoneNumbers) {

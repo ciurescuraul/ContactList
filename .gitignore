@@ -25,10 +25,10 @@
 hs_err_pid*
 *.iml
 .idea
-/src/main/java/ro/jademy/contactlist/FileHandler.java
-/src/main/java/ro/jademy/contactlist/RandomID.java
-/src/main/java/ro/jademy/contactlist/Search.java
-/src/main/java/ro/jademy/contactlist/StaticUsers.java
+src/main/java/ro/jademy/contactlist/FileHandler.java
+src/main/java/ro/jademy/contactlist/RandomID.java
+src/main/java/ro/jademy/contactlist/Search.java
+src/main/java/ro/jademy/contactlist/StaticUsers.java
 
 
 

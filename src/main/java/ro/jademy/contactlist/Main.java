@@ -3,6 +3,8 @@ package ro.jademy.contactlist;
 import ro.jademy.contactlist.service.FileUserService;
 import ro.jademy.contactlist.service.MemoryUserService;
 
+import java.io.File;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -13,7 +15,7 @@ public class Main {
         // search by a given or multiple criteria
         // display some statistics for the contact list
 
-        Menu menu = new Menu(new MemoryUserService());
+        Menu menu = new Menu(new FileUserService("contactsFile.txt"));
         menu.showMenu();
 
 

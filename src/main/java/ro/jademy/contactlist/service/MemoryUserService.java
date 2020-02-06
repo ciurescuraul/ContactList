@@ -6,6 +6,7 @@ import ro.jademy.contactlist.model.PhoneNumber;
 import ro.jademy.contactlist.model.User;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class MemoryUserService implements UserService {
@@ -73,11 +74,22 @@ public class MemoryUserService implements UserService {
 
     @Override
     public List<User> search(String query) {
-
-        List<User> result = contacts
+        List<User> byFirstName = contacts
                 .stream()
-                .filter(item -> item.getFirstName().toLowerCase().equals(query.toLowerCase()))
+                .filter(f -> f.getFirstName() != null)
+                .filter(f -> f.getFirstName().toLowerCase().equals(query.toLowerCase()))
+                .filter(l -> l.getLastName() != null)
+                .filter(l -> l.getLastName().toLowerCase().equals(query.toLowerCase()))
                 .collect(Collectors.toList());
+        List<User> byLastName = contacts
+                .stream()
+                .filter(l -> l.getLastName() != null)
+                .filter(l -> l.getLastName().toLowerCase().equals(query.toLowerCase()))
+                .collect(Collectors.toList());
+
+        List<User> result = new ArrayList<>();
+        result.addAll(byFirstName);
+        result.addAll(byLastName);
         // TODO.txt: implement method
         return result;
     }

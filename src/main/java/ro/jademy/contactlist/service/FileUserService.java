@@ -1,15 +1,14 @@
 package ro.jademy.contactlist.service;
 
+import org.w3c.dom.ls.LSOutput;
 import ro.jademy.contactlist.model.Address;
 import ro.jademy.contactlist.model.Company;
 import ro.jademy.contactlist.model.PhoneNumber;
 import ro.jademy.contactlist.model.User;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.io.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class FileUserService implements UserService {
 
@@ -88,13 +87,79 @@ public class FileUserService implements UserService {
     }
 
     private List<User> readFromFile() {
+        String read = "";
+        List<User> userList = new ArrayList<>();
+        if (contactsFile.exists()) {
+            try (BufferedReader out = new BufferedReader(new FileReader(contactsFile))) {
+                while ((read = out.readLine()) != null) {
+                    String[] lineSplit = read.split("[|,_]");
+
+                    String firstName = lineSplit[0].toUpperCase();
+                    String lastName = lineSplit[1].toUpperCase();
+                    String workCategory = lineSplit[2].toUpperCase();
+                    String workPrefix = lineSplit[3];
+                    String workNumber = lineSplit[4];
+                    String homeCategory = lineSplit[5].toUpperCase();
+                    String homePrefix = lineSplit[6];
+                    String homeNumber = lineSplit[7];
+                    String email = lineSplit[8].toUpperCase();
+
+                    Map<String, PhoneNumber> phoneMap = new HashMap<>();
+                    phoneMap.put(workCategory, new PhoneNumber(workPrefix, workNumber));
+                    phoneMap.put(homeCategory, new PhoneNumber(homePrefix, homeNumber));
+
+                    int userId = (int) (Math.random() * 900) + 1;
+                    User user = new User(userId, firstName, lastName, email, null, phoneMap, null, null, null, false);
+                    userList.add(user);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            File file = new File(String.valueOf(contactsFile));
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                System.out.println("File cannot be created");
+                e.printStackTrace();
+            }
+        }
+
         // TODO.txt: read user properties from file and create the user list
         // TODO.txt: remember to check if the file exists first (create it if it does not)
 
-        return new ArrayList<>();
+        return userList;
     }
 
     private void writeToFile() {
+
+        try {
+            BufferedWriter in = new BufferedWriter(new FileWriter(contactsFile,true));
+
+            for (User user : contacts) {
+                in.newLine();
+                in.append(user.getFirstName().toLowerCase()).append("|");
+                in.append(user.getLastName().toLowerCase()).append("|");
+                // Iterates the map
+                for (Map.Entry<String, PhoneNumber> entry : user.getPhoneNumbers().entrySet()) {
+                    if(entry.getKey().toLowerCase().equals("work")) {
+                        in.append(entry.getKey()).append("_").append(entry.getValue().getCountryCode()).append("_").append(entry.getValue().getNumber()).append(",");
+                    }
+                    if(entry.getKey().toLowerCase().equals("home")) {
+                        in.append(entry.getKey()).append("_").append(entry.getValue().getCountryCode()).append("_").append(entry.getValue().getNumber()).append("|");
+                    }
+                }
+
+                in.append(user.getEmail());
+            }
+            in.flush();
+            in.close();
+
+        } catch (IOException e) {
+            System.out.println("Can't write to file !");
+            e.printStackTrace();
+        }
         // TODO.txt: implement method using the contacts and file properties
     }
 
